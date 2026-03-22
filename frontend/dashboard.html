@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Details - DocuMind AI</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">📁 DocuMind AI</div>
+    <div class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="chat.html">Ask Questions</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Document Detail View -->
+    <div class="document-detail-container">
+      <div class="detail-header">
+        <button onclick="window.history.back()" class="btn-back">← Back</button>
+        <h1 id="docTitle">Loading...</h1>
+        <div class="detail-actions">
+          <button class="btn-small btn-view" onclick="downloadDocument()">📥 Download</button>
+          <button class="btn-small btn-delete" onclick="deleteCurrentDocument()">🗑️ Delete</button>
+        </div>
+      </div>
+
+      <!-- Document Metadata -->
+      <div class="metadata-grid">
+        <div class="metadata-card">
+          <div class="metadata-label">Category</div>
+          <div class="metadata-value" id="docCategory">-</div>
+        </div>
+        <div class="metadata-card">
+          <div class="metadata-label">File Type</div>
+          <div class="metadata-value" id="docType">-</div>
+        </div>
+        <div class="metadata-card">
+          <div class="metadata-label">Pages</div>
+          <div class="metadata-value" id="docPages">-</div>
+        </div>
+        <div class="metadata-card">
+          <div class="metadata-label">Size</div>
+          <div class="metadata-value" id="docSize">-</div>
+        </div>
+        <div class="metadata-card">
+          <div class="metadata-label">Uploaded</div>
+          <div class="metadata-value" id="docDate">-</div>
+        </div>
+        <div class="metadata-card">
+          <div class="metadata-label">Status</div>
+          <div class="metadata-value" id="docStatus">-</div>
+        </div>
+      </div>
+
+      <!-- AI Summary -->
+      <div class="summary-section">
+        <h2>🤖 AI Summary</h2>
+        <p id="docSummary" class="summary-text">Loading summary...</p>
+      </div>
+
+      <!-- Tags -->
+      <div class="tags-section">
+        <h3>🏷️ Tags</h3>
+        <div id="docTags" class="document-tags">
+          <!-- Tags will be loaded here -->
+        </div>
+      </div>
+
+      <!-- Full Text Content -->
+      <div class="content-section">
+        <div class="content-header">
+          <h2>📄 Full Text Content</h2>
+          <button class="btn-small btn-view" onclick="copyContent()">📋 Copy Text</button>
+        </div>
+        <div id="docContent" class="content-text">
+          Loading content...
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <h3>⚡ Quick Actions</h3>
+        <div class="action-buttons">
+          <button class="action-btn" onclick="askAboutDocument('Summarize the key points')">
+            💡 Summarize Key Points
+          </button>
+          <button class="action-btn" onclick="askAboutDocument('Extract all dates mentioned')">
+            📅 Extract Dates
+          </button>
+          <button class="action-btn" onclick="askAboutDocument('List all names mentioned')">
+            👥 Extract Names
+          </button>
+          <button class="action-btn" onclick="askAboutDocument('Find action items or tasks')">
+            ✅ Find Action Items
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:5000/api';
+    let currentDocumentId = null;
+    let currentDocument = null;
+
+    // Get document ID from URL
+    function getDocumentIdFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('id');
+    }
+
+    // Load document details
+    async function loadDocumentDetails() {
+      currentDocumentId = getDocumentIdFromURL();
+      
+      if (!currentDocumentId) {
+        alert('No document ID provided');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/documents/${currentDocumentId}`);
+        const doc = await response.json();
+        currentDocument = doc;
+
+        // Populate all fields
+        document.getElementById('docTitle').textContent = doc.originalName;
+        document.getElementById('docCategory').textContent = doc.category || 'Uncategorized';
+        document.getElementById('docType').textContent = doc.fileType.toUpperCase();
+        document.getElementById('docPages').textContent = doc.pageCount || 'N/A';
+        document.getElementById('docSize').textContent = formatFileSize(doc.fileSize);
+        document.getElementById('docDate').textContent = new Date(doc.uploadedAt).toLocaleDateString();
+        document.getElementById('docStatus').textContent = doc.status || 'Active';
+        document.getElementById('docSummary').textContent = doc.summary || 'No summary available';
+
+        // Tags
+        const tagsContainer = document.getElementById('docTags');
+        tagsContainer.innerHTML = '';
+        if (doc.tags && doc.tags.length > 0) {
+          doc.tags.forEach(tag => {
+            const tagSpan = document.createElement('span');
+            tagSpan.className = 'tag';
+            tagSpan.textContent = tag;
+            tagsContainer.appendChild(tagSpan);
+          });
+        } else {
+          tagsContainer.innerHTML = '<span style="color:#666;">No tags</span>';
+        }
+
+        // Full content
+        const contentDiv = document.getElementById('docContent');
+        contentDiv.textContent = doc.textContent || 'No content available';
+
+      } catch (error) {
+        console.error('Error loading document:', error);
+        alert('Failed to load document details');
+      }
+    }
+
+    // Format file size
+    function formatFileSize(bytes) {
+      if (!bytes) return '0 KB';
+      const kb = bytes / 1024;
+      if (kb < 1024) return kb.toFixed(2) + ' KB';
+      return (kb / 1024).toFixed(2) + ' MB';
+    }
+
+    // Copy content to clipboard
+    function copyContent() {
+      const content = document.getElementById('docContent').textContent;
+      navigator.clipboard.writeText(content).then(() => {
+        alert('✅ Content copied to clipboard!');
+      }).catch(err => {
+        console.error('Copy failed:', err);
+        alert('❌ Failed to copy content');
+      });
+    }
+
+    // Download document
+    function downloadDocument() {
+      if (!currentDocument) return;
+      
+      // Create a blob and download
+      const blob = new Blob([currentDocument.textContent], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = currentDocument.originalName.replace(/\.[^/.]+$/, '') + '.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Delete current document
+    async function deleteCurrentDocument() {
+      if (!confirm('Are you sure you want to delete this document?')) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/documents/${currentDocumentId}`, {
+          method: 'DELETE'
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          alert('✅ Document deleted successfully');
+          window.location.href = 'index.html';
+        } else {
+          alert('❌ Error: ' + data.error);
+        }
+
+      } catch (error) {
+        console.error('Delete error:', error);
+        alert('❌ Failed to delete document');
+      }
+    }
+
+    // Ask question about this document
+    function askAboutDocument(question) {
+      // Redirect to chat page with pre-filled question
+      const encodedQuestion = encodeURIComponent(question + ' in document: ' + currentDocument.originalName);
+      window.location.href = `chat.html?q=${encodedQuestion}`;
+    }
+
+    // Load on page load
+    loadDocumentDetails();
+  </script>
+</body>
+</html>

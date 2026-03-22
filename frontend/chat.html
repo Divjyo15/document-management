@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ask Questions - DocuMind AI</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">📁 DocuMind AI</div>
+    <div class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="chat.html" class="active">Ask Questions</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="chat-container">
+      <div class="chat-header">
+        <h2>💬 Ask Questions About Your Documents</h2>
+        <p>Type any question and I'll search through your uploaded documents</p>
+      </div>
+
+      <div id="chatMessages" class="chat-messages">
+        <div class="message bot-message">
+          <div class="message-avatar">🤖</div>
+          <div class="message-content">
+            <p>Hello! I can help you find information from your documents. Try asking:</p>
+            <ul>
+              <li>"Show me all contracts expiring in Q1"</li>
+              <li>"Summarize the pricing section"</li>
+              <li>"What are the payment terms?"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-container">
+        <input 
+          type="text" 
+          id="questionInput" 
+          placeholder="Ask a question about your documents..." 
+          class="chat-input"
+        >
+        <button id="sendBtn" class="btn-send">Send</button>
+      </div>
+    </div>
+
+    <!-- Related Documents Sidebar -->
+    <div id="relatedDocs" class="related-docs" style="display:none;">
+      <h3>📄 Related Documents</h3>
+      <div id="relatedDocsList"></div>
+    </div>
+  </div>
+
+  <script src="js/chat.js"></script>
+</body>
+</html>

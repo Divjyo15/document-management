@@ -1,0 +1,81 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Management System</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">📁 DocuMind AI</div>
+    <div class="nav-links">
+      <a href="index.html" class="active">Dashboard</a>
+      <a href="chat.html">Ask Questions</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Upload Section -->
+    <div class="upload-section">
+      <h2>Upload New Document</h2>
+      <form id="uploadForm" enctype="multipart/form-data">
+        <div class="file-input-wrapper">
+          <input type="file" id="documentFile" name="document" accept=".pdf,.docx,.txt" required>
+          <label for="documentFile" class="file-label">
+            <span id="fileName">Choose file (PDF, DOCX, TXT)</span>
+          </label>
+        </div>
+        <button type="submit" id="uploadBtn" class="btn-primary">
+          Upload & Analyze
+        </button>
+      </form>
+      <div id="uploadProgress" class="progress-bar" style="display:none;">
+        <div class="progress-fill"></div>
+        <span class="progress-text">Processing...</span>
+      </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📄</div>
+        <div class="stat-value" id="totalDocs">0</div>
+        <div class="stat-label">Total Documents</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-value" id="totalCategories">0</div>
+        <div class="stat-label">Categories</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💾</div>
+        <div class="stat-value" id="totalSize">0 MB</div>
+        <div class="stat-label">Total Size</div>
+      </div>
+    </div>
+
+    <!-- Search & Filter -->
+    <div class="search-section">
+      <input type="text" id="searchInput" placeholder="Search documents..." class="search-input">
+      <select id="categoryFilter" class="filter-select">
+        <option value="">All Categories</option>
+      </select>
+    </div>
+
+    <!-- Documents List -->
+    <div class="documents-section">
+      <h2>Your Documents</h2>
+      <div id="documentsList" class="documents-grid">
+        <!-- Documents will be loaded here -->
+      </div>
+    </div>
+  </div>
+  <button class="btn-small btn-view" onclick="viewDocument('${doc._id}')">
+  View Details
+</button>
+
+  <script src="js/upload.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
