@@ -16,20 +16,7 @@ An AI-powered document management system that automatically categorizes, summari
 - 🏷️ **Smart Tagging**: Automatic tag generation for easy organization
 - 🎨 **Modern UI**: Clean, responsive interface built with vanilla JavaScript
 
-## 📸 Screenshots
-### Dashboard
-![Dashboard](./screenshots/dashboard.png)
-
-
-### Document Upload
-![Upload](./screenshots/upload.png)
-
-### Chat Interface
-![Chat](./screenshots/chat.png)
-
----
-
-## 🛠️ Tech Stack
+c## 🛠️ Tech Stack
 
 ### Backend
 - **Node.js** - Runtime environment
