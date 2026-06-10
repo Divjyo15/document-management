@@ -1,22 +1,16 @@
-{
-  "dependencies": {
-    "@anthropic-ai/sdk": "^0.80.0",
-    "@google/generative-ai": "^0.24.1",
-    "axios": "^1.13.6",
-    "cors": "^2.8.6",
-    "docx": "^9.6.1",
-    "dotenv": "^17.3.1",
-    "express": "^5.2.1",
-    "groq-sdk": "^1.1.1",
-    "init": "^0.1.2",
-    "mammoth": "^1.12.0",
-    "mongoose": "^9.3.1",
-    "multer": "^2.1.1",
-    "nodemon": "^3.1.14",
-    "pdf-parse": "^1.1.1",
-    "textract": "^2.5.0"
+"dependencies": {
+    "axios": "^1.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "groq-sdk": "^0.3.0",
+    "mammoth": "^1.8.0",
+    "mongoose": "^8.0.0",
+    "multer": "^1.4.5-lts.1",
+    "pdf-parse": "^2.4.5"
   },
-  "scripts": {
-    "start": "node index.js"
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }
+
