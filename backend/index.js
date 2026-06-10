@@ -58,6 +58,24 @@ const fs = require('fs');
 require('dotenv').config();
 
 // Check environment variables
+const allowedOrigins = [
+  'https://document-management-yn4i.onrender.com',
+  'http://localhost:5000',
+  'http://localhost:3000'
+];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS not allowed'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 if (!process.env.GROQ_API_KEY) {
   console.error('⚠️ ERROR: GROQ_API_KEY not found!');
   process.exit(1);
