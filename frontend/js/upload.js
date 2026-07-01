@@ -1,5 +1,5 @@
 // js/upload.js
-
+const API_URL = 'https://document-management-api.onrender.com/api';
 // File input handler
 document.getElementById('documentFile').addEventListener('change', function(e) {
   const fileName = e.target.files[0]?.name || 'Choose file';
