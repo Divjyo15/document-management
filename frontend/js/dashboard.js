@@ -7,18 +7,19 @@ async function loadStats() {
     const response = await fetch(`${API_URL}/documents/stats/overview`);
     const stats = await response.json();
 
-    document.getElementById('totalDocs').textContent = 
+    document.getElementById('totalDocs').textContent =
       stats.total[0]?.count || 0;
 
-    document.getElementById('totalCategories').textContent = 
+    document.getElementById('totalCategories').textContent =
       stats.byCategory.length;
 
     const totalSizeMB = (stats.totalSize[0]?.size || 0) / (1024 * 1024);
-    document.getElementById('totalSize').textContent = 
+    document.getElementById('totalSize').textContent =
       totalSizeMB.toFixed(2) + ' MB';
 
     // Populate category filter
     const categoryFilter = document.getElementById('categoryFilter');
+    categoryFilter.innerHTML = '<option value="">All Categories</option>';
     stats.byCategory.forEach(cat => {
       const option = document.createElement('option');
       option.value = cat._id;
@@ -71,20 +72,20 @@ function createDocumentCard(doc) {
       <div class="document-title">${doc.originalName}</div>
       <div class="document-type">${doc.fileType}</div>
     </div>
-    
+
     <div class="document-meta">
       <span>📅 ${date}</span>
-      <span>📄 ${doc.pageCount} pages</span>
+      <span>📄 ${doc.pageCount || 0} pages</span>
     </div>
-    
+
     <div class="document-summary">
       ${doc.summary || 'No summary available'}
     </div>
-    
+
     <div class="document-tags">
-      ${doc.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+      ${(doc.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
     </div>
-    
+
     <div class="document-actions">
       <button class="btn-small btn-view" onclick="viewDocument('${doc._id}')">
         View Details
@@ -144,15 +145,6 @@ document.getElementById('categoryFilter').addEventListener('change', function(e)
   loadDocuments({ search, category });
 });
 
-
 // Initial load
 loadStats();
 loadDocuments();
-// ... tumhara existing code ...
-
-// Initial load
-
-// 👇 YEH FUNCTION ADD KARO (line 150+ ke aas paas, file ke end mein)
-function viewDocument(id) {
-  window.location.href = `dashboard.html?id=${id}`;
-}
