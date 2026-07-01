@@ -1,7 +1,7 @@
-// backend/services/documentParser.js
 const fs = require('fs');
 const mammoth = require('mammoth');
-const pdfParse = require('pdf-parse');
+const pdfParseModule = require('pdf-parse');
+const pdfParse = pdfParseModule.default || pdfParseModule;
 
 async function extractText(filePath, fileType) {
   try {
