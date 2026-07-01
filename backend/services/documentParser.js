@@ -1,6 +1,6 @@
 // backend/services/documentParser.js
 const fs = require('fs');
-const pdfParse = require('pdf-parse');
+
 const mammoth = require('mammoth');
 
 async function extractText(filePath, fileType) {
@@ -9,6 +9,7 @@ async function extractText(filePath, fileType) {
     let pageCount = 0;
 
     if (fileType === 'pdf') {
+      const pdfParse = require('pdf-parse');
       const dataBuffer = fs.readFileSync(filePath);
       const pdfData = await pdfParse(dataBuffer);
       text = pdfData.text;
