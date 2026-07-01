@@ -1,5 +1,5 @@
 // js/dashboard.js
-const API_URL = 'https://document-management-api.onrender.com/api';
+const API_URL = 'https://document-management-yn4i.onrender.com/api';
 
 // Load statistics
 async function loadStats() {
