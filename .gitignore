@@ -1,0 +1,10 @@
+node_modules/
+.env
+uploads/
+
+index.js
+models/
+routes/
+services/
+test-connectio.js
+test-groq.js
