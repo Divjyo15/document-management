@@ -1,5 +1,5 @@
 // js/chat.js
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://document-management-yn4i.onrender.com/api';
 
 const chatMessages = document.getElementById('chatMessages');
 const questionInput = document.getElementById('questionInput');
